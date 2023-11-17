@@ -1,4 +1,4 @@
-export default errorCreator = (statusCode, message) => {
+export const errorCreator = (statusCode, message) => {
     const err = new Error();
     err.statusCode = statusCode;
     err.message = message;
