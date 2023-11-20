@@ -32,7 +32,7 @@ export default function Header() {
               About
             </li>
           </Link>
-          <Link to="/sign-in">
+          <Link to={currentUser ? "/profile" : "/sign-in"}>
             {currentUser ? (
               <img
                 className="rounded-full w-7 h-7 object-cover"
