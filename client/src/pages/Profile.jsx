@@ -6,8 +6,11 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { app } from "../firebase";
+import { app } from "../firebase.js";
 import {
+  userDeleteFailure,
+  userDeleteStart,
+  userDeleteSuccess,
   userUpdateFailure,
   userUpdateStart,
   userUpdateSuccess,
@@ -81,6 +84,22 @@ export default function Profile() {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      dispatch(userDeleteStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(userDeleteFailure(data.message));
+        return;
+      }
+      dispatch(userDeleteSuccess(data));
+    } catch (error) {
+      dispatch(userDeleteFailure(error.message));
+    }
+  };
   // allow read;
   // allow write: if
   // request.resource.size < 2 * 1024 * 1024 && (Size less than 2MB)
@@ -147,7 +166,9 @@ export default function Profile() {
         </button>
       </form>
       <div className="flex mt-2 justify-between">
-        <span className="text-red-700 cursor-pointer">Delete account</span>
+        <span className="text-red-700 cursor-pointer" onClick={handleDelete}>
+          Delete account
+        </span>
         <span className="text-red-700 cursor-pointer">Sign out</span>
       </div>
       <p className="text-red-700 mt-2">{error && error}</p>
