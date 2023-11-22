@@ -27,7 +27,6 @@ export default function Profile() {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
-  console.log(currentUser);
 
   useEffect(() => {
     if (file) {
